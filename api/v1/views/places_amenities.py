@@ -53,7 +53,6 @@ if storage_t == "db":
         else:
             return jsonify({})
 
-
     @app_views.route("/places/<place_id>/amenities/<amenity_id>",
                      methods=["POST"], strict_slashes=False)
     def post_place_amenity(place_id, amenity_id):
@@ -106,7 +105,6 @@ else:
             abort(404)
         else:
             return jsonify({})
-
 
     @app_views.route("/places/<place_id>/amenities/<amenity_id>",
                      methods=["POST"], strict_slashes=False)
