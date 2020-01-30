@@ -101,3 +101,57 @@ def updates_place(place_id):
             abort(400, "Not a JSON")
     else:
         abort(404)
+
+@app_views.route("/places_search", methods=['POST'],
+                 strict_slashes=False)
+def place_search():
+    list_obj = []
+    obj_request = request.get_json()
+    if obj_request:
+        if "states" in obj_request and len(obj_request["states"]) > 0:
+            list_states = obj_request["states"]
+            for state_id in list_states:
+                state = storage.get("State", state_id)
+                if state:
+                    list_cities = state.cities
+                    for city in list_cities:
+                        list_places = city.places
+                        for place in list_places:
+                            list_obj.append(place.to_dict())
+
+        if "cities" in obj_request and len(obj_request["cities"]) > 0:
+            list_cities = obj_request["cities"]
+            for city_id in list_cities:
+                city = storage.get("City", city_id)
+                if city:
+                    list_places = city.places
+                    for place in list_places:
+                        list_obj.append(place.to_dict())
+
+        """
+        if "amenities" in obj_request and len(obj_request["amenities"]) > 0:
+            list_obj_two = []
+            list_amenities = obj_request["amenities"]
+            for amenity_id in list_amenities:
+                for place in list_obj:
+                    flag = False
+                    for amenity in place.amenities:
+                        amenity = amenity.to_dict()
+                        if amenity["id"] == amenity_id:
+                            flag = True
+                    if flag == True:
+                        list_obj_two.append(place)
+            for i in range(len(list_obj)):
+                list_obj_two[i] = list_obj_two[i].to_dict()
+                print(list_obj_two[i], i, len(list_obj))
+                print(list_obj_two[3], 3)
+                amenities_convert = []
+                for j in range(len(list_obj_two[i]["amenities"])):
+                    a = list_obj_two[i]["amenities"][j].to_dict()
+                    amenities_convert.append(a)
+                list_obj_two[i]["amenities"] = amenities_convert
+            print("hola")
+            return jsonify(list_obj_two)
+        """
+
+        return jsonify(list_obj)
