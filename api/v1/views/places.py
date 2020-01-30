@@ -102,6 +102,7 @@ def updates_place(place_id):
     else:
         abort(404)
 
+
 @app_views.route("/places_search", methods=['POST'],
                  strict_slashes=False)
 def place_search():
